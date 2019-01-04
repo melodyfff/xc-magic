@@ -1,0 +1,2 @@
+# xc-magic
+some notes
