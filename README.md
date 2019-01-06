@@ -1,2 +1,2 @@
 # xc-magic
-some notes
+Some Notes
