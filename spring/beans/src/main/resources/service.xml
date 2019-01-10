@@ -4,4 +4,32 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <alias name="hello" alias="coffee" />
+
+    <bean id="hello" scope="prototype" class="com.xinchen.spring.beans.entiry.Coffee">
+        <property name="name" value="hello"/>
+        <property name="creatDate">
+            <bean factory-bean="simpleDateFormat" factory-method="parse">
+                <constructor-arg value="2017-11-24"/>
+            </bean>
+        </property>
+        <property name="id" value="1" />
+        <property name="types">
+            <list>
+                <value>A</value>
+                <value>B</value>
+            </list>
+        </property>
+        <property name="prices">
+          <map>
+              <entry key="test" value="2.0" />
+          </map>
+        </property>
+    </bean>
+
+
+    <bean id="simpleDateFormat" class="java.text.SimpleDateFormat">
+        <constructor-arg value="yyyy-MM-dd"/>
+    </bean>
+
 </beans>
