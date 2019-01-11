@@ -4,9 +4,23 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <alias name="hello" alias="coffee" />
 
-    <bean id="hello" scope="prototype" class="com.xinchen.spring.beans.entiry.Coffee">
+    <!-- ① Instantiation with a constructor (default (no-argument) constructor) -->
+    <bean id="coffee2" class="com.xinchen.spring.beans.entity.Coffee" />
+
+    <!-- ② Instantiation with a static factory method -->
+    <bean id="coffeeService"
+          class="com.xinchen.spring.beans.service.CoffeeService"
+          factory-method="createInstance" />
+
+    <!-- ③ Instantiation using an instance factory method -->
+    <bean id="coffeeServiceLocator" class="com.xinchen.spring.beans.service.DefaultCoffeeServiceLocator" />
+    <bean id="coffeeService2" factory-bean="coffeeServiceLocator" factory-method="createCoffeeServiceInstance" />
+
+
+    <alias name="coffee" alias="hello" />
+
+    <bean id="coffee" scope="prototype" class="com.xinchen.spring.beans.entity.Coffee">
         <property name="name" value="hello"/>
         <property name="creatDate">
             <bean factory-bean="simpleDateFormat" factory-method="parse">
@@ -26,7 +40,6 @@
           </map>
         </property>
     </bean>
-
 
     <bean id="simpleDateFormat" class="java.text.SimpleDateFormat">
         <constructor-arg value="yyyy-MM-dd"/>

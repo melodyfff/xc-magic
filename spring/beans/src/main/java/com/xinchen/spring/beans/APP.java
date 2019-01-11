@@ -14,5 +14,11 @@ public class APP {
         final Object coffee = context.getBean("coffee");
         System.out.println(hello);
         System.out.println(coffee);
+
+        final Object coffeeService = context.getBean("coffeeService");
+        System.out.println(coffeeService);
+
+        final Object coffeeService2 = context.getBean("coffeeService2");
+        System.out.println(coffeeService2);
     }
 }

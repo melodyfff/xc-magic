@@ -1,4 +1,4 @@
-package com.xinchen.spring.beans.entiry;
+package com.xinchen.spring.beans.entity;
 
 import lombok.Getter;
 import lombok.Setter;
