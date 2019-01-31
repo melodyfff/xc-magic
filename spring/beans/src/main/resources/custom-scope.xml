@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 使用CustomScopeConfigurer声明自定义Scope -->
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="thread">
+                    <bean class="org.springframework.context.support.SimpleThreadScope" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <!-- singleton is default scope -->
+    <bean id="coffee1" class="com.xinchen.spring.beans.entity.Coffee" scope="singleton"/>
+
+    <!-- use custom 'thread' scope -->
+    <bean id="coffee2" class="com.xinchen.spring.beans.entity.Coffee" scope="thread" />
+</beans>
