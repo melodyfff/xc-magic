@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 /**
+ * Code-based Servlet container initialization
  *
  * @author Xin Chen (xinchenmelody@gmail.com)
  * @version 1.0

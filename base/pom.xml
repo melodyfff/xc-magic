@@ -16,9 +16,15 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring.version>4.3.18.RELEASE</spring.version>
+        <!-- 此处spring-data-jpa 版本如果是2.x会报 org.springframework.core.ReactiveTypeDescriptor异常 -->
+        <spring.data.jpa.version>1.11.18.RELEASE</spring.data.jpa.version>
+        <hibernate.version>5.2.18.Final</hibernate.version>
+        <hibernate-jpa-2.1-api.version>1.0.2.Final</hibernate-jpa-2.1-api.version>
         <servlet.version>3.1.0</servlet.version>
+        <h2.version>1.4.198</h2.version>
         <logback.version>1.2.3</logback.version>
         <jcl-over-slf4j.version>1.7.24</jcl-over-slf4j.version>
+        <jackson.version>2.9.7</jackson.version>
         <lombok.version>1.18.2</lombok.version>
         <junit.version>4.12</junit.version>
     </properties>
@@ -41,9 +47,40 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--*************************************-->
+        <!--        Data Dependency              -->
+        <!--*************************************-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+
+        <!--*************************************-->
+        <!--        Spring Dependency            -->
+        <!--*************************************-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
         </dependency>
 
         <dependency>
@@ -56,9 +93,30 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
+        <!--*************************************-->
+        <!--        MessageCover Dependency      -->
+        <!--*************************************-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+
+        <!--*************************************-->
+        <!--        Test Dependency              -->
+        <!--*************************************-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
         </dependency>
     </dependencies>
 
@@ -80,6 +138,18 @@
             </dependency>
 
             <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-parameter-names</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
@@ -89,6 +159,31 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>${jcl-over-slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+                <!--<scope>test</scope>-->
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>${hibernate-jpa-2.1-api.version}</version>
             </dependency>
 
             <dependency>
