@@ -16,6 +16,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "xc_user")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //@Proxy(lazy = false)
 public class User {
     @Id
