@@ -101,11 +101,6 @@
             <artifactId>jackson-module-parameter-names</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-        </dependency>
-
         <!--*************************************-->
         <!--        Test Dependency              -->
         <!--*************************************-->

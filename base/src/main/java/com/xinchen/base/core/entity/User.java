@@ -1,5 +1,6 @@
 package com.xinchen.base.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -16,13 +17,14 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "xc_user")
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //@Proxy(lazy = false)
-public class User {
+public class User extends BaseEntity{
     @Id
     @GeneratedValue
+    @JsonProperty("id")
     private long id;
 
     @Column(name = "name")
+    @JsonProperty("user_name")
     private String name;
 }
