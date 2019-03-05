@@ -4,7 +4,9 @@ import com.xinchen.base.core.entity.User;
 import com.xinchen.base.core.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,6 +26,14 @@ public class UserController {
     @GetMapping("/insert/{id}/{name}")
     @ResponseBody
     public void insert(@PathVariable("id") long id,@PathVariable("name") String name){
+        User user = new User();
+        user.setId(id);
+        user.setName(name);
+        userService.addUser(user);
+    }
+
+    @PostMapping("/insert")
+    public void insert2(@ModelAttribute("id") long id, @ModelAttribute("name") String name){
         User user = new User();
         user.setId(id);
         user.setName(name);
