@@ -1,2 +1,2 @@
 # xc-magic
-Some Notes
+## code as pratice
