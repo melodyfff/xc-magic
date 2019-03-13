@@ -36,7 +36,7 @@ public class UserControllerTest extends ApplicationWebContextTests {
     @Test
     public void getTest() throws Exception {
         this.mockMvc.perform(get("/user/get/2"))
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isBadRequest())
                 .andDo(print());
 
     }

@@ -2,6 +2,7 @@ package com.xinchen.base.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -15,12 +16,19 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
+ *
+ *
+ * 关于此处 EnableAspectJAutoProxy(proxyTargetClass = true)
+ * 参考：https://blog.csdn.net/my_nice_life/article/details/52910718
+ *
+ *
  * @author Xin Chen (xinchenmelody@gmail.com)
  * @version 1.0
  * @date Created In 2019/2/28 23:54
  */
 @Configuration
 @EnableWebMvc
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(basePackages = "com.xinchen.base.web")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
