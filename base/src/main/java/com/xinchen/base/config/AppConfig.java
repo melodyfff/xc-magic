@@ -4,6 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
  */
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
+@PropertySource(value = "classpath:application.properties",ignoreResourceNotFound = true)
 @ComponentScan(basePackages = "com.xinchen.base",
         excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION,value = Controller.class),
