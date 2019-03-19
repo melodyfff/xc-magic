@@ -7,6 +7,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * newSingleThreadExecutor：new FinalizableDelegatedExecutorService(new ThreadPoolExecutor(1, 1,0L, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>())
+ *
+ * 线程池中只有一个工作线程，它依次执行每个任务
+ * 如果这个唯一的线程因为异常结束，那么会有一个新的线程来替代它
+ * 此线程池保证所有任务的执行顺序按照任务的提交顺序执行
+ *
  * @author Xin Chen (xinchenmelody@gmail.com)
  * @version 1.0
  * @date Created In 2019/3/19 22:43
