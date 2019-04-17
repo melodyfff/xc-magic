@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @author Xin Chen (xinchenmelody@gmail.com)
@@ -24,7 +26,7 @@ public class UserRepositoryTest extends AppTest {
     @Test
     public void testInsert(){
 
-        final Role role = roleRepository.findById(2L).get();
+        final Role role = roleRepository.findById(1L).get();
 
         User user = new User();
         user.setUserName("admin");
@@ -34,9 +36,17 @@ public class UserRepositoryTest extends AppTest {
         userRepository.save(user);
     }
 
+
+    @Test
+    public void testGet(){
+        final Optional<User> byId = userRepository.findById(1L);
+        System.out.println(byId);
+    }
+
+
     @Test
     public void testDelete(){
-        final User user = userRepository.findById(3L).get();
+        final User user = userRepository.findById(2L).get();
 
 
         userRepository.delete(user);
