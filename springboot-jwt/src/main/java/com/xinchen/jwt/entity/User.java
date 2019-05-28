@@ -16,4 +16,8 @@ public class User {
     private String id;
     private String username;
     private String password;
+
+    public boolean isEmpty() {
+        return ((null == this.getId()) || (null == this.getUsername()) || (null == this.getPassword()));
+    }
 }

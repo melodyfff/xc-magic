@@ -26,6 +26,11 @@ public interface UserService {
      * @return u
      */
     static UserService getUser(User u){
-        return user -> null == u ? new User("1","admin","admin") : u;
+        return user -> null == user ? new User("1","admin","admin") : u;
+    }
+
+
+    static UserService getUserById(final String id){
+        return user -> id.equals("1") ? new User("1", "admin", "admin") : null;
     }
 }
