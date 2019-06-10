@@ -2,6 +2,7 @@ package com.xinchen.base.core.pipeline;
 
 import com.xinchen.base.core.vo.Request;
 import com.xinchen.base.core.vo.Task;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
+@Slf4j
 public class HandlerContext {
     /** 前一节点 */
     HandlerContext pre;
@@ -25,6 +27,7 @@ public class HandlerContext {
 
 
     public void fireTaskReceived(Request request) {
+        log.info("进入[{}] -> 触发 pipeline -> 接收到任务 fireTaskReceived",this.getClass().getName());
         invokeTaskReceived(next(), request);
     }
     public void fireTaskFiltered(Task task) {
@@ -36,6 +39,7 @@ public class HandlerContext {
     }
 
     public void fireAfterCompletion(HandlerContext ctx) {
+        log.info("进入[{}] -> 结束 pipeline -> 结束任务 fireAfterCompletion",this.getClass().getName());
         invokeAfterCompletion(next());
     }
 
