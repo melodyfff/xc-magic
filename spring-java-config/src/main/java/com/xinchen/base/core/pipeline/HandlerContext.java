@@ -31,10 +31,12 @@ public class HandlerContext {
         invokeTaskReceived(next(), request);
     }
     public void fireTaskFiltered(Task task) {
+        log.info("进入[{}] -> 触发 pipeline -> 过滤任务 [{}] fireTaskFiltered",this.getClass().getName(),task);
         invokeTaskFiltered(next(), task);
     }
 
     public void fireTaskExecuted(Task task) {
+        log.info("进入[{}] -> 触发 pipeline -> 执行任务 [{}] fireTaskExecuted",this.getClass().getName(),task);
         invokeTaskExecuted(next(), task);
     }
 
