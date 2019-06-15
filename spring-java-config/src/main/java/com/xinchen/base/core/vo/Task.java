@@ -1,5 +1,6 @@
 package com.xinchen.base.core.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * @date Created In 2019/6/10 22:54
  */
 @Data
+@AllArgsConstructor
 public class Task {
 
     /** 任务名 */

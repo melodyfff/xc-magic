@@ -15,7 +15,7 @@ public class DemoHandler implements Handler{
 
     @Override
     public void filterTask(HandlerContext ctx, Task task) {
-      log.info("进入[{}] -> 触发 pipeline -> 接收到任务 fireTaskReceived",this.getClass().getName());
+      log.info("进入[{}] -> 触发 pipeline -> 接收到任务 [{}] fireTaskReceived",this.getClass().getName(),task);
       ctx.fireTaskFiltered(task);
 
     }

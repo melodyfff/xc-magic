@@ -10,6 +10,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
+ *
+ * 在未加入节点的时候会存在三个HandlerContext
+ *
+ * 分别为
+ * head、tail 以及调用传递head头的HandlerContext
+ *
+ * 使用的时候只需继承Handler接口，实现对应的方法即可被调用
+ *
  * @author Xin Chen (xinchenmelody@gmail.com)
  * @version 1.0
  * @date Created In 2019/6/10 23:15
@@ -44,7 +52,8 @@ public class DefaultPipeline implements Pipeline, ApplicationContextAware, Initi
      * 一般通过外部调用方的参数进行封装即可
      * @param request  Request业务请求分发
      */
-    public DefaultPipeline(Request request) {
+    public DefaultPipeline(Request request,Task task) {
+        this.task = task;
         this.request = request;
     }
 

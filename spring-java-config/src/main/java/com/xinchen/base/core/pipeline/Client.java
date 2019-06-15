@@ -1,6 +1,7 @@
 package com.xinchen.base.core.pipeline;
 
 import com.xinchen.base.core.vo.Request;
+import com.xinchen.base.core.vo.Task;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,8 @@ public class Client {
     public void mockedClient() {
         // request一般是通过外部调用获取
         Request request = new Request("测试");
-        Pipeline pipeline = newPipeline(request);
+        Task task = new Task("测试");
+        Pipeline pipeline = newPipeline(request,task);
         try {
             pipeline.fireTaskReceived();
             pipeline.fireTaskFiltered();
@@ -31,8 +33,8 @@ public class Client {
     }
 
 
-    private Pipeline newPipeline(Request request) {
-        return context.getBean(DefaultPipeline.class, request);
+    private Pipeline newPipeline(Request request,Task task) {
+        return context.getBean(DefaultPipeline.class, request,task);
     }
 
 }
