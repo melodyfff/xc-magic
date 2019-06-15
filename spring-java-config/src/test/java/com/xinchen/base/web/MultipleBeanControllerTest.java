@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version 1.0
  * @date 05/03/2019 11:07
  */
-public class HelloControllerTest extends ApplicationWebContextTests {
+public class HeControllerTest extends ApplicationWebContextTests {
 
     @Autowired
     private HelloController helloController;
