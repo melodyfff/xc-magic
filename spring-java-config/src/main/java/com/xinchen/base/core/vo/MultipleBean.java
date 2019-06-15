@@ -1,9 +1,5 @@
 package com.xinchen.base.core.vo;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.context.support.ApplicationObjectSupport;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -17,7 +13,7 @@ import java.util.Date;
  */
 //@Component
 //@Scope(scopeName = "request",proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class MultipleBean extends ApplicationObjectSupport {
+public class MultipleBean {
     private Date date;
 
 

@@ -22,7 +22,7 @@
         <hibernate-jpa-2.1-api.version>1.0.2.Final</hibernate-jpa-2.1-api.version>
         <servlet.version>3.1.0</servlet.version>
         <aspectj.version>1.8.13</aspectj.version>
-        <h2.version>1.4.198</h2.version>
+        <h2.version>1.4.199</h2.version>
         <logback.version>1.2.3</logback.version>
         <jcl-over-slf4j.version>1.7.24</jcl-over-slf4j.version>
         <jackson.version>2.9.7</jackson.version>
