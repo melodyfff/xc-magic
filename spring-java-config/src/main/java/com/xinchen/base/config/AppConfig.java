@@ -1,5 +1,6 @@
 package com.xinchen.base.config;
 
+import com.xinchen.base.config.auto.EnableHello;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Controller;
  * @version 1.0
  * @date Created In 2019/2/28 23:26
  */
+@EnableHello
+
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
 @PropertySource(value = "classpath:application.properties",ignoreResourceNotFound = true)
