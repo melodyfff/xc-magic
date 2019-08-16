@@ -1,4 +1,4 @@
-package com.xinchen.spring.beans.customizing;
+package com.xinchen.spring.beans.lifecycle.demo;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -21,15 +21,17 @@ public class LifecycleDemo implements InitializingBean, DisposableBean {
         System.out.println("init Constructor method...");
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("init from InitializingBean...");
-    }
 
     @PostConstruct
     public void init(){
         System.out.println("init init() method...");
     }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("init from InitializingBean...");
+    }
+
 
     @PreDestroy
     public void myDestroy(){

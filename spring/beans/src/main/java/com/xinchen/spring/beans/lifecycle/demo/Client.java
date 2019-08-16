@@ -1,4 +1,4 @@
-package com.xinchen.spring.beans.customizing;
+package com.xinchen.spring.beans.lifecycle.demo;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

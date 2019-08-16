@@ -11,7 +11,7 @@
     <!--<context:annotation-config/>-->
 
     <!-- 除了具有<context:annotation-config>的功能之外,还可以在指定的package下扫描以及注册javabean -->
-    <context:component-scan base-package="com.xinchen.spring.beans.customizing" />
+    <context:component-scan base-package="com.xinchen.spring.beans.lifecycle.demo" />
 
-    <!--<bean name="lifeCycleDemoByXml" class="com.xinchen.spring.beans.customizing.LifecycleDemo" init-method="init" destroy-method="myDestroy"/>-->
+    <!--<bean name="lifeCycleDemoByXml" class="com.xinchen.spring.beans.lifecycle.demo.LifecycleDemo" init-method="init" destroy-method="myDestroy"/>-->
 </beans>
