@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="person" class="com.xinchen.spring.beans.conversion.propertyeditors.Person">
+        <property name="name" value="hello"/>
+        <property name="type" value="admin"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="com.xinchen.spring.beans.conversion.propertyeditors.PersonType" value="com.xinchen.spring.beans.conversion.propertyeditors.PersonTypeEditor" />
+            </map>
+        </property>
+    </bean>
+
+</beans>
