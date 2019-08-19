@@ -13,6 +13,7 @@
 
     <modules>
         <module>beans</module>
+        <module>aop</module>
     </modules>
 
 
