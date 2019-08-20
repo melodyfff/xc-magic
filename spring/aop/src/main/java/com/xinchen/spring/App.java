@@ -1,5 +1,6 @@
 package com.xinchen.spring;
 
+import com.xinchen.spring.service.DemoService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.concurrent.CountDownLatch;
@@ -13,6 +14,11 @@ public class App {
     public static void main(String[] args) throws InterruptedException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         context.start();
+
+
+        DemoService demoService = context.getBean(DemoService.class);
+        demoService.say();
+
 
         latch.await(60, TimeUnit.SECONDS);
 

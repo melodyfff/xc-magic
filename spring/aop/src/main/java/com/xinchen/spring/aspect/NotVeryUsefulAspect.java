@@ -1,4 +1,4 @@
-package com.xinchen.spring;
+package com.xinchen.spring.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
