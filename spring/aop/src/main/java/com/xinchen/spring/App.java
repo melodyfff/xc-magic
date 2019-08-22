@@ -1,6 +1,7 @@
 package com.xinchen.spring;
 
 import com.xinchen.spring.service.DemoService;
+import com.xinchen.spring.service.ExceptionDemoService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.concurrent.CountDownLatch;
@@ -18,6 +19,15 @@ public class App {
 
         DemoService demoService = context.getBean(DemoService.class);
         demoService.say();
+
+
+        ExceptionDemoService exceptionDemoService = context.getBean(ExceptionDemoService.class);
+
+        try {
+            exceptionDemoService.throwError("hello");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         latch.await(60, TimeUnit.SECONDS);

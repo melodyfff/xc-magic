@@ -23,4 +23,8 @@ public abstract class AbstractPointCuts {
     @Pointcut("execution(* com.xinchen.spring.service.DemoService.say())")
     public void oneMethod(){}
 
+
+    @Pointcut("execution(* com.xinchen.spring.service.ExceptionDemoService..*(..))")
+    public void getThrow(){}
+
 }
