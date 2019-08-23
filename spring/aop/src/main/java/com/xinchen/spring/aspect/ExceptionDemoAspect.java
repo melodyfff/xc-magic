@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-public class ExceptionDemoAspect extends AbstractPointCuts{
+public class ExceptionDemoAspect {
 
-    @AfterThrowing("getThrow()")
-    public void catchException(){
-        System.out.println("we get the exception");
+    @AfterThrowing(value = "com.xinchen.spring.aspect.SystemArchitecture.getThrow()",throwing = "ex")
+    public void catchException(Exception ex){
+        System.out.println("> we get the exception : "+ ex.getLocalizedMessage());
     }
 }

@@ -6,12 +6,13 @@ import org.springframework.stereotype.Service;
 /**
  * @author xinchen
  * @version 1.0
- * @date 20/08/2019 16:25
+ * @date 23/08/2019 15:31
  */
 @Service
-public class ExceptionDemoService {
-    @Ok
-    public void throwError(String name) throws Exception {
-        throw new Exception(name);
+public class AnnotationService {
+
+    @Ok("hello")
+    public void say(){
+        System.out.println("Hello Annotation");
     }
 }

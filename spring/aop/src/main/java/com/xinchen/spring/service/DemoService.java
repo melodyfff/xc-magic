@@ -10,8 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemoService {
 
-    public void say(){
-        System.out.println("Hello World!");
+    static final String SAY = "Hello World!";
+
+    public String say(){
+        System.out.println(SAY);
+        return SAY;
+    }
+
+    public void say(String world){
+        System.out.println("Hello "+ world);
+    }
+
+    public void say(String p1,String p2){
+        System.out.println(p1+p2);
     }
 
 }

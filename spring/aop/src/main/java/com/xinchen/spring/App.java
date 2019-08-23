@@ -1,5 +1,6 @@
 package com.xinchen.spring;
 
+import com.xinchen.spring.service.AnnotationService;
 import com.xinchen.spring.service.DemoService;
 import com.xinchen.spring.service.ExceptionDemoService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -19,10 +20,15 @@ public class App {
 
         DemoService demoService = context.getBean(DemoService.class);
         demoService.say();
+        demoService.say("world!");
+        demoService.say("Hello"," World.");
+
+
+        AnnotationService annotationService = context.getBean(AnnotationService.class);
+        annotationService.say();
 
 
         ExceptionDemoService exceptionDemoService = context.getBean(ExceptionDemoService.class);
-
         try {
             exceptionDemoService.throwError("hello");
         } catch (Exception e) {
