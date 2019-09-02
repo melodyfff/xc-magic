@@ -8,7 +8,11 @@ import java.util.concurrent.TimeUnit;
 
 /**
  *
- * VM : -javaagent:spring-instrument.jar
+ *
+ *
+ * VM : -javaagent:spring-instrument.jar -javaagent:aspectjweaver-1.9.4.jar
+ *
+ * 参考: jvm agent动态加载 : https://www.cnblogs.com/CLAYJJ/p/7992064.html
  *
  * @author xinchen
  * @version 1.0
@@ -26,5 +30,11 @@ public class Main {
         bean.calculateEntitlement();
 
         latch.await(10, TimeUnit.SECONDS);
+
+        //StopWatch 'ProfilingAspect': running time (millis) = 2001
+        //-----------------------------------------
+        //ms     %     Task name
+        //-----------------------------------------
+        //02001  100%  calculateEntitlement
     }
 }
