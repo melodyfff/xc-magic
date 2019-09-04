@@ -29,9 +29,10 @@ public class LoadTimeWeaverConfig implements LoadTimeWeavingConfigurer {
         return new InstrumentationLoadTimeWeaver();
     }
 
-    @Bean
-    public ProfilingAspect profilingAspect(){
-        return Aspects.aspectOf(ProfilingAspect.class);
-    }
+    // 此处不用单独声明也可以使用
+//    @Bean
+//    public ProfilingAspect profilingAspect(){
+//        return Aspects.aspectOf(ProfilingAspect.class);
+//    }
 
 }
