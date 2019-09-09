@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--  自动装配的是advisor -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+        <!-- 使用cglib -->
+        <property name="proxyTargetClass" value="true" />
+
+        <!--  过滤条件,选择期望生效的advisor -->
+        <!--  加上该过滤条件继承DefaultIntroductionAdvisor的类可能就不会被自动环绕     -->
+<!--        <property name="usePrefix" value="true" />-->
+<!--        <property name="advisorBeanNamePrefix" value="customAdvisor" />-->
+    </bean>
+
+    <!--  自动被创建代理 -->
+    <bean id="personService" class="com.xinchen.spring.proxying.api.metadata.PersonImpl" />
+
+    <!-- 自定义顾问 -->
+    <bean id="customAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <!--  日志  -->
+        <property name="advice" ref="global_loggerAdvice" />
+        <!-- 拦截所有方法名包含action的 -->
+        <property name="patterns" value=".*action.*"/>
+    </bean>
+
+    <!--  注意DefaultIntroductionAdvisor是面向所有,所以任何方法调用都会默认被倒入该advisor -->
+    <bean id="global_lockMixinAdvisor" class="com.xinchen.spring.proxying.api.advisor.LockMixinAdvisor"/>
+    <bean id="global_debugInterceptor" class="com.xinchen.spring.proxying.api.advice.DebugInterceptor" />
+
+
+    <bean id="global_loggerAdvice" class="com.xinchen.spring.proxying.api.advice.LoggerBeforeAdvice" />
+</beans>

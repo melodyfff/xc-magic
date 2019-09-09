@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="personTarget" class="com.xinchen.spring.proxying.api.metadata.PersonImpl">
+        <!--<property name="someProperty" value="Custom string property value"/>-->
+    </bean>
+
+    <bean id="lockMixinAdvisor" class="com.xinchen.spring.proxying.api.advisor.LockMixinAdvisor">
+        <!--<property name="someProperty" value="Custom string property value"/>-->
+    </bean>
+
+    <bean id="debugInterceptor" class="com.xinchen.spring.proxying.api.advice.DebugInterceptor" />
+
+    <bean id="person" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interfaces" value="com.xinchen.spring.proxying.api.metadata.Person" />
+        <property name="target" ref="personTarget" />
+
+        <!-- 默认为jdk,这里设置为true即使用cglib -->
+        <property name="proxyTargetClass" value="false"/>
+
+        <!-- Use inner bean, not local reference to target -->
+<!--        <property name="target">-->
+<!--            <bean class="com.xinchen.spring.proxying.mechanisms.SimplePojo" />-->
+<!--        </property>-->
+
+        <property name="interceptorNames">
+            <list>
+                <!--此处的排序影响切面的顺序-->
+                <value>lockMixinAdvisor</value>
+                <value>debugInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

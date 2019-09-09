@@ -1,4 +1,4 @@
-package com.xinchen.spring.api;
+package com.xinchen.spring.proxying.api.advisor;
 
 /**
  * @author xinchen

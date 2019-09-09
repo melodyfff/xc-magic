@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="global_lockMixinAdvisor" class="com.xinchen.spring.proxying.api.advisor.LockMixinAdvisor"/>
+    <bean id="global_debugInterceptor" class="com.xinchen.spring.proxying.api.advice.DebugInterceptor" />
+
+    <!-- 自动创建代理 -->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <!-- 默认为jdk,这里设置为true即使用cglib -->
+        <property name="proxyTargetClass" value="true"/>
+
+        <!--   匹配bean的名字, ','号分隔多个  -->
+        <property name="beanNames" value="person*"/>
+
+        <property name="interceptorNames">
+            <list>
+                <value>global_lockMixinAdvisor</value>
+                <value>global_debugInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--  自动被创建代理 -->
+    <bean id="personService" class="com.xinchen.spring.proxying.api.metadata.PersonImpl" />
+</beans>

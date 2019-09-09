@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="person" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!--    这里没有代理接口,直接代理的类    -->
+        <!-- 默认为jdk,这里设置为true即使用cglib -->
+        <property name="proxyTargetClass" value="true"/>
+
+        <!-- Use inner bean, not local reference to target -->
+        <property name="target">
+            <bean class="com.xinchen.spring.proxying.api.metadata.PersonImpl" />
+        </property>
+
+        <property name="interceptorNames">
+            <list>
+                <!--Using “Global” Advisors-->
+                <value>global*</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="global_lockMixinAdvisor" class="com.xinchen.spring.proxying.api.advisor.LockMixinAdvisor">
+        <!--<property name="someProperty" value="Custom string property value"/>-->
+    </bean>
+
+    <bean id="global_debugInterceptor" class="com.xinchen.spring.proxying.api.advice.DebugInterceptor" />
+
+</beans>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--  初始目标对象  -->
+    <bean id="initialTarget" class="com.xinchen.spring.targetsource.detadata.PersonService" />
+
+    <!-- 热拔插包裹对象 -->
+    <bean id="swapper" class="org.springframework.aop.target.HotSwappableTargetSource">
+        <constructor-arg ref="initialTarget" />
+    </bean>
+
+    <!--  代理对象 -->
+    <bean id="swappable" class="org.springframework.aop.framework.ProxyFactoryBean" >
+        <property name="targetSource" ref="swapper" />
+    </bean>
+
+</beans>

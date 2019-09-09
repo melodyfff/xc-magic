@@ -1,4 +1,4 @@
-package com.xinchen.spring.api.advice;
+package com.xinchen.spring.proxying.api.advice;
 
 import org.springframework.aop.AfterReturningAdvice;
 
