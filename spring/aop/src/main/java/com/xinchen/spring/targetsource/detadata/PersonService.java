@@ -17,7 +17,7 @@ public class PersonService {
     }
 
 
-    private void action(){
-        System.out.println("[PersonService] -> action()");
+    public void action(){
+        System.out.println(this+"-> action()");
     }
 }

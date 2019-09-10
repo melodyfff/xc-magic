@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--  初始目标对象(采用原型模式)  -->
+    <bean id="businessObjectTarget" class="com.xinchen.spring.targetsource.detadata.BusinessService" scope="prototype"/>
+    
+    <!--  在这种情况下，将在每次方法调用时创建目标的新实例  -->
+    <bean id="prototypeTargetSource" class="org.springframework.aop.target.PrototypeTargetSource">
+        <property name="targetBeanName" value="businessObjectTarget" />
+    </bean>
+
+    <!--  代理类,真正代理的是PrototypeTargetSource -->
+    <bean id="businessObject" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyTargetClass" value="true" />
+        <property name="targetSource" ref="prototypeTargetSource" />
+        <!-- 拦截器advice/顾问advisor -->
+        <!--<property name="interceptorNames" value=""/>-->
+    </bean>
+</beans>

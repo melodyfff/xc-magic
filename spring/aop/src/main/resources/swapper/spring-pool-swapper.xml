@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--  初始目标对象(采用原型模式)  -->
+    <bean id="businessObjectTarget" class="com.xinchen.spring.targetsource.detadata.BusinessService" scope="prototype"/>
+    
+    <!--  pool化对象  -->
+    <bean id="poolTargetSource" class="org.springframework.aop.target.CommonsPool2TargetSource">
+        <property name="targetBeanName" value="businessObjectTarget" />
+        <!--    最大空闲    -->
+        <property name="maxIdle" value="10" />
+        <!--    最大数目    -->
+        <property name="maxSize" value="25" />
+    </bean>
+
+    <!--  代理类,真正代理的是CommonsPool2TargetSource  -->
+    <bean id="businessObject" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyTargetClass" value="true" />
+        <property name="targetSource" ref="poolTargetSource" />
+        <!-- 拦截器advice/顾问advisor -->
+        <property name="interceptorNames" value="poolConfigAdvisor"/>
+    </bean>
+
+
+    <!-- 将Spring配置为能够将任何池化对象转换为 org.springframework.aop.target.PoolingConfig接口，从而通过简介公开有关池的配置和当前大小的信息  -->
+    <!-- 这个advisor是通过调用AbstractPoolingTargetSource中的getPoolingConfigMixin()方法获得,因此使用了MethodInvokingFactoryBean -->
+    <!-- 该advisor继承DefaultIntroductionAdvisor,使用自动代理会被自动注入   -->
+    <bean id="poolConfigAdvisor" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="poolTargetSource" />
+        <property name="targetMethod" value="getPoolingConfigMixin" />
+    </bean>
+
+    <!--  自动代理  -->
+    <!-- <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />-->
+
+</beans>

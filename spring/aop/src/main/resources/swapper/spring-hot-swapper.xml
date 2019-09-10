@@ -12,7 +12,7 @@
         <constructor-arg ref="initialTarget" />
     </bean>
 
-    <!--  代理对象 -->
+    <!--  代理对象,代理的是HotSwappableTargetSource而不是目标对象 -->
     <bean id="swappable" class="org.springframework.aop.framework.ProxyFactoryBean" >
         <property name="targetSource" ref="swapper" />
     </bean>
