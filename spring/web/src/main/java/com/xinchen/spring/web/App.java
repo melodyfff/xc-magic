@@ -1,4 +1,4 @@
-package com.xinchen.spring;
+package com.xinchen.spring.web;
 
 /**
  * Hello world!
