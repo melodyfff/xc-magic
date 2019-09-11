@@ -4,12 +4,12 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  *
- * APP WebApplicationContext Config
+ * Root WebApplicationContext Config
  *
- * @author Xin Chen (xinchenmelody@gmail.com)
+ * @author xinchen
  * @version 1.0
- * @date Created In 2019/9/10 23:27
+ * @date 11/09/2019 12:16
  */
 @Configuration
-public class AppConfig {
+public class RootConfig {
 }
