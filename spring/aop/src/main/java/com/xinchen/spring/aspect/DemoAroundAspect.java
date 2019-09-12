@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(2)
 public class DemoAroundAspect {
-    @Around(value = "com.xinchen.spring.aspect.SystemArchitecture.oneWithArgs(p1)",argNames = "p1")
+    @Around(value = "com.xinchen.spring.aspect.SystemArchitecture.oneWithArgs(p1)",argNames = "pjp,p1")
     public Object doAround(ProceedingJoinPoint pjp, Object p1) throws Throwable {
         System.out.println("> around :" + p1);
         // Proceed with the next advice or target method invocation
-        return pjp.proceed();
+        return pjp.proceed(new Object[]{p1});
     }
 }
