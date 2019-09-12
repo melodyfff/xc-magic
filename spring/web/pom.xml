@@ -17,6 +17,7 @@
 
   <properties>
     <servlet.version>3.1.0</servlet.version>
+    <jackson.version>2.9.9</jackson.version>
   </properties>
 
   <dependencies>
@@ -31,6 +32,25 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>${servlet.version}</version>
       <scope>provided</scope>
+    </dependency>
+
+    <!--  消息转换中使用到，自动推断参数名称  -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-parameter-names</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- jackson xml 支持缩进需要使用到 -->
+    <dependency>
+      <groupId>org.codehaus.woodstox</groupId>
+      <artifactId>woodstox-core-asl</artifactId>
+      <version>4.4.1</version>
     </dependency>
 
   </dependencies>

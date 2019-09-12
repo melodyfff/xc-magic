@@ -1,19 +1,27 @@
 package com.xinchen.spring.web.config;
 
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -96,7 +104,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        // 数据类型(Content Types) ,
+        // 数据类型(Content Types) ，在WebMvcConfigurationSupport#requestMappingHandlerAdapter()中添加
 
         // 默认会添加xml的
         configurer.mediaType("json", MediaType.APPLICATION_JSON);
@@ -105,11 +113,54 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // 消息转换(Message Converters) , 在WebMvcConfigurationSupport#requestMappingHandlerAdapter()中添加
+
+        // 这里的参数converters可以参照WebMvcConfigurationSupport#getMessageConverters(),其实是传入的一个new ArrayList<HttpMessageConverter<?>>()
+        // 如果不自定义消息转换则会调用WebMvcConfigurationSupport#addDefaultHttpMessageConverters(this.messageConverters);添加默认的消息转换
+        // 这里如果添加了则会覆盖默认的消息转换，如果想进行拓展可以覆盖extendMessageConverters()方法进行添加
         super.configureMessageConverters(converters);
     }
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        super.extendMessageConverters(converters);
+        // 消息转换(Message Converters) , 在WebMvcConfigurationSupport#requestMappingHandlerAdapter()中添加
+
+        // 这里主要是进行拓展添加自定义的消息转换
+        // 通过Jackson2ObjectMapperBuilder为MappingJackson2HttpMessageConverter和MappingJackson2XmlHttpMessageConverter配置公共配置，缩进/日期格式/注册module
+        // 注： Jackson XML使用缩进除了jackson-dataformat-xml外还需要添加woodstox-core-asl
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
+                .indentOutput(true)
+                .dateFormat(new SimpleDateFormat("yyyy-MM-dd"))
+                // 模块自动推断，参考： https://nkcoder.github.io/2019/06/21/jackson-parameter-name-module/
+                .modulesToInstall(new ParameterNamesModule());
+        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+        converters.add(new MappingJackson2XmlHttpMessageConverter(builder.createXmlMapper(true).build()));
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        // 视图控制器(View Controllers) , 查看WebMvcConfigurationSupport#viewControllerHandlerMapping()观察全过程
+
+        // 类似于xml中的 <mvc:view-controller path="/" view-name="home"/>
+        registry.addViewController("/").setViewName("home");
+    }
+
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        // 视图解析器(View Resolvers) ， 查看WebMvcConfigurationSupport#mvcViewResolver()观察全过程
+
+        // 开启JSP和Jackson作为视图解析，默认视图为JSON
+        // xml中的配置如下
+        // <mvc:view-resolvers>
+        //     <mvc:content-negotiation>
+        //         <mvc:default-views>
+        //             <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+        //         </mvc:default-views>
+        //     </mvc:content-negotiation>
+        //     <mvc:jsp/>
+        // </mvc:view-resolvers>
+
+        registry.enableContentNegotiation(new MappingJackson2JsonView());
+        registry.jsp();
     }
 }
