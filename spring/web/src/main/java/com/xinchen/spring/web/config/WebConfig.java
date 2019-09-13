@@ -9,6 +9,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.validation.Validator;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import org.springframework.web.servlet.view.xml.MappingJackson2XmlView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -112,6 +114,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 数据类型(Content Types) ，在WebMvcConfigurationSupport#requestMappingHandlerAdapter()中添加
 
         // 默认会添加xml的
+        // configurer.ignoreAcceptHeader(true).defaultContentType(MediaType.APPLICATION_JSON);
+        // 请求会根据后缀或者参数去判断需要转换为的媒体类型
+
+        // configurer.favorPathExtension() favorPathExtension表示支持后缀匹配
+        // configurer.favorParameter()  通过还需设置parameterName()来确定查询参数
+
+        // 设置默认返回json
+        configurer.defaultContentType(MediaType.APPLICATION_JSON);
+
+        // 这里表示请求http://localhost:8080/app/ok.ok 也会返回json
+        configurer.mediaType("ok", MediaType.APPLICATION_JSON);
         configurer.mediaType("json", MediaType.APPLICATION_JSON);
         configurer.mediaType("xml", MediaType.APPLICATION_XML);
     }
@@ -150,6 +163,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("home");
     }
 
+
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         // 视图解析器(View Resolvers) ， 查看WebMvcConfigurationSupport#mvcViewResolver()观察全过程
@@ -165,8 +179,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         //     <mvc:jsp/>
         // </mvc:view-resolvers>
 
-        registry.enableContentNegotiation(new MappingJackson2JsonView());
-        registry.jsp();
+        // enableContentNegotiation(boolean useNotAcceptableStatus, View... defaultViews)
+        // useNotAcceptableStatus如果设置为true，则找不到视图的时候回返回状态码406
+
+        // 开启多视图解析,可参考： http://websystique.com/springmvc/spring-4-mvc-contentnegotiatingviewresolver-example/
+        // 如访问http://localhost:8080/app1/ok.json http://localhost:8080/app1/ok.xml http://localhost:8080/app1/ok ,分别返回不同的视图
+        // 这里也和header中的 Accept有关， application/json则返回json，  text/html或者
+        registry.enableContentNegotiation(new MappingJackson2JsonView(),new MappingJackson2XmlView());
+        registry.jsp("/WEB-INF/", ".jsp");
     }
 
     @Override
@@ -209,4 +229,19 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 如果没有配置则默认使用AntPathMatcher()和UrlPathHelper(),这两个都注册为bean交给spring管理
         super.configurePathMatch(configurer);
     }
+
+    @Override
+    public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+        // 配置异常处理，如果这里添加了自定义的，则会替换为默认的
+        // 如果这里不做任何操作，则生成默认，查看WebMvcConfigurationSupport#addDefaultHandlerExceptionResolvers()
+        super.configureHandlerExceptionResolvers(exceptionResolvers);
+    }
+
+    @Override
+    public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+        // 异常处理， 进行拓展不会替换默认的ExceptionResolvers
+        super.extendHandlerExceptionResolvers(exceptionResolvers);
+    }
+
+
 }

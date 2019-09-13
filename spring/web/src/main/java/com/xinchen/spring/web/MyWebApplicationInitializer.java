@@ -78,7 +78,6 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
         rootContext.register(RootConfig.class);
         //rootContext.refresh();
 
-
         // 由于采用了2种方式实现WebApplicationInitializer
         // 如果加上监听器,则会报错: Cannot initialize context because there is already a root application context present
         // org.springframework.web.context.ContextLoader#initWebApplicationContext(ServletContext servletContext)中会检测是否已经存在root config了
@@ -89,8 +88,16 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
 
         // Create and register the DispatcherServlet
         DispatcherServlet servlet = new DispatcherServlet(rootContext);
+
+        // WebApplicationContext命名空间。默认值是[server-name]-servlet。
+        servlet.setNamespace("app");
+
+
         ServletRegistration.Dynamic servletRegistration = servletContext.addServlet("app-dispatcher-WebApplicationInitializer", servlet);
         servletRegistration.setLoadOnStartup(1);
         servletRegistration.addMapping("/app/*");
+
+        // 设置在debug/trace日志级别的时候打印请求的详细信息
+        servletRegistration.setInitParameter("enableLoggingRequestDetails", "true");
     }
 }

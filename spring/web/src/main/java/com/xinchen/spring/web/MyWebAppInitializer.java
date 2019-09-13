@@ -110,6 +110,8 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         // 预留钩子,对ServletRegistration.Dynamic 作一些自定义配置,这里的启动顺序默认是1
         registration.setLoadOnStartup(2);
+        // 设置在debug/trace日志级别的时候打印请求的详细信息
+         registration.setInitParameter("enableLoggingRequestDetails", "true");
     }
 
     @SafeVarargs
