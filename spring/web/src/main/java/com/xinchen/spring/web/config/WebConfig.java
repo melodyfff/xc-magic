@@ -10,8 +10,11 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -27,14 +30,14 @@ import java.util.List;
 /**
  * {@link EnableWebMvc} 类似于xml中的配置,通过这个注解开启MVC Configuration
  *
+ *
  * <pre>
  *     <mvc:annotation-driven/>
  * </pre>
  *
  * 这个注解其实主要是 @Import(DelegatingWebMvcConfiguration.class), 委派给spring进行mvc的相关配置
  *
- * 关键代码是:
- *
+ * 所以可以存在多个mvcConfig,关键代码是:
  * <pre>
  *  @Autowired(required = false)
  * 	public void setConfigurers(List<WebMvcConfigurer> configurers) {
@@ -98,6 +101,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 自定义拦截器可继承HandlerInterceptorAdapter 针对preHandle，postHandle，afterCompletion
         // 拦截器(Interceptors)和过滤器(Filters)都是针对URL的,而AOP则是拦截的是更细致的元数据(包/类/方法/参数)
         registry.addInterceptor(new LocaleChangeInterceptor());
+
+        // 路径匹配 /**(匹配所有) /app/*.x(匹配/app/路径下的所有.x) /app/o?k(匹配/app/路径下的o1k,oWK等)
         registry.addInterceptor(new ThemeChangeInterceptor()).addPathPatterns("/**").excludePathPatterns("/admin/**");
     }
 
@@ -162,5 +167,46 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         registry.enableContentNegotiation(new MappingJackson2JsonView());
         registry.jsp();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 静态资源(Static Resources) , 查看WebMvcConfigurationSupport#resourceHandlerMapping()观察全过程
+
+        // 官网查看更多： https://docs.spring.io/spring/docs/5.2.0.BUILD-SNAPSHOT/spring-framework-reference/web.html#mvc-config-static-resources
+        // 由于设定了两个DispatcherServlet的servlet分别为app/和app1/ ， 所以访问该静态资源的路径可能是http://localhost:8080/app/resources/static/hello.js
+
+        // xml中的配置： <mvc:resources mapping="/resources/**" location="/public, classpath:/static/" cache-period="31556926" />
+        registry.addResourceHandler("/resources/**")
+                // 静态资源本地路径
+                .addResourceLocations("classpath:/static")
+                // 指定资源处理程序所服务资源的缓存周期（以秒为单位）
+                // The default is to not send any cache headers but to rely on last-modified timestamps only
+                // 默认不发送任何缓存头，值依赖 `last-modified`
+                .setCachePeriod(31556926);
+    }
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        // 默认Servlet(Default Servlet) ,查看WebMvcConfigurationSupport#defaultServletHandlerMapping()观察全过程
+
+        // Spring MVC允许映射DispatcherServlet到 '/' （从而覆盖容器的默认Servlet的映射），同时仍然允许容器的默认Servlet处理静态资源请求。
+        // 这里我们自定义了2个DispatcherServlet，可能效果不是很明显
+        // 这里使用的是DefaultServletHttpRequestHandler，优先级别为Integer.MAX_VALUE,很低
+
+        // xml中的配置： <mvc:default-servlet-handler/>
+
+        // 这个方法开启后，会生成一个DefaultServletHttpRequestHandler
+        // 最终会返回一个HandlerMapping，Order的级别为Integer.MAX_VALUE
+        configurer.enable();
+    }
+
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        // 路径匹配(Path Matching) ,观察WebMvcConfigurationSupport#mvcPathMatcher()和mvcUrlPathHelper()
+        // 查看PathMatchConfigurer获取更多细节
+
+        // 如果没有配置则默认使用AntPathMatcher()和UrlPathHelper(),这两个都注册为bean交给spring管理
+        super.configurePathMatch(configurer);
     }
 }

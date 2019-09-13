@@ -18,6 +18,7 @@
   <properties>
     <servlet.version>3.1.0</servlet.version>
     <jackson.version>2.9.9</jackson.version>
+    <jcl-over-slf4j.version>1.7.24</jcl-over-slf4j.version>
   </properties>
 
   <dependencies>
@@ -51,6 +52,13 @@
       <groupId>org.codehaus.woodstox</groupId>
       <artifactId>woodstox-core-asl</artifactId>
       <version>4.4.1</version>
+    </dependency>
+
+    <!--  接管spring日志输出  -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${jcl-over-slf4j.version}</version>
     </dependency>
 
   </dependencies>
