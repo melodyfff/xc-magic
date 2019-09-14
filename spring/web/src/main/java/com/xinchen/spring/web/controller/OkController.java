@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * 用于测试返回不同类型xml\json\jsp的数据
  *
+ * 注，请求头header里面的 `Accept` 设置`application/xml` / `application/json`会返回不同结果
+ *
  * 以下注释掉的写法都通用
  *
  * @author Xin Chen (xinchenmelody@gmail.com)
@@ -34,7 +36,7 @@ public class OkController {
 //
 //    }
 
-    @RequestMapping(path = "/ok",produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/ok")
     public ApiResult ok(){
         return ApiResult.of(ResultCode.SUCCESS);
     }

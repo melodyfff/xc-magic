@@ -1,6 +1,7 @@
 package com.xinchen.spring.web.config;
 
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import com.xinchen.spring.web.exception.MyDefaultHandlerExceptionResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
@@ -186,7 +187,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 如访问http://localhost:8080/app1/ok.json http://localhost:8080/app1/ok.xml http://localhost:8080/app1/ok ,分别返回不同的视图
         // 这里也和header中的 Accept有关， application/json则返回json，  text/html或者
         registry.enableContentNegotiation(new MappingJackson2JsonView(),new MappingJackson2XmlView());
-        registry.jsp("/WEB-INF/", ".jsp");
+        registry.jsp("/WEB-INF/classes/view/", ".html");
     }
 
     @Override
@@ -216,9 +217,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         // xml中的配置： <mvc:default-servlet-handler/>
 
-        // 这个方法开启后，会生成一个DefaultServletHttpRequestHandler
+        // 这个方法开启后，会生成一个DefaultServletHttpRequestHandler，默认名字为default
         // 最终会返回一个HandlerMapping，Order的级别为Integer.MAX_VALUE
-        configurer.enable();
+//        configurer.enable();
     }
 
     @Override
@@ -234,6 +235,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
         // 配置异常处理，如果这里添加了自定义的，则会替换为默认的
         // 如果这里不做任何操作，则生成默认，查看WebMvcConfigurationSupport#addDefaultHandlerExceptionResolvers()
+        exceptionResolvers.add(new MyDefaultHandlerExceptionResolver());
         super.configureHandlerExceptionResolvers(exceptionResolvers);
     }
 

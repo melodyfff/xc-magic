@@ -1,10 +1,11 @@
-package com.xinchen.spring.web;
+package com.xinchen.spring.web.exception;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestControllerAdvice(basePackages = "com.xinchen.spring.web")
 @Slf4j
-public class GlobalExceptionResolver {
+public class GlobalExceptionResolver extends DefaultHandlerExceptionResolver {
 
 
     @ExceptionHandler(Exception.class)

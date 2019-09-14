@@ -1,9 +1,12 @@
 package com.xinchen.spring.web;
 
 import com.xinchen.spring.web.config.RootConfig;
+import org.springframework.core.Ordered;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.HandlerExecutionChain;
+import org.springframework.web.servlet.handler.HandlerExceptionResolverComposite;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -55,9 +58,11 @@ import javax.servlet.ServletRegistration;
  * 		initMultipartResolver(context);
  * 		initLocaleResolver(context);
  * 		initThemeResolver(context);
- * 		initHandlerMappings(context);
- * 		initHandlerAdapters(context);
- * 		initHandlerExceptionResolvers(context);
+ * 		initHandlerMappings(context);  // BeanNameUrlHandlerMapping和DefaultAnnotationHandlerMapping包含在框架中，处理程序将始终包含在{@link HandlerExecutionChain}中，可实现{@link Ordered}确保顺序
+ * 	                                   // 关于其中的拦截器部分HandlerInterceptor，分别在{@link HandlerExecutionChain}中的applyPreHandle、applyPostHandle()、体现
+ *
+ * 		initHandlerAdapters(context);  // HandlerAdapters主要是调度HandlerExecutionChain中的Handler处理请求，屏蔽细节
+ * 		initHandlerExceptionResolvers(context); // 主要是BeanName为`handlerExceptionResolver`的{@link HandlerExceptionResolverComposite},Order为Ordered.LOWEST_PRECEDENCE
  * 		initRequestToViewNameTranslator(context);
  * 		initViewResolvers(context);
  * 		initFlashMapManager(context);
@@ -91,6 +96,10 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
 
         // WebApplicationContext命名空间。默认值是[server-name]-servlet。
         servlet.setNamespace("app");
+
+        // 开启当找不到处理处理请求的时候，抛出异常，这里可以方便我们统一处理异常如404等
+        // 如果默认开启了<mvc:default-servlet-handler/> 则这里可能不会抛出异常，因为总会找默认的
+        servlet.setThrowExceptionIfNoHandlerFound(true);
 
 
         ServletRegistration.Dynamic servletRegistration = servletContext.addServlet("app-dispatcher-WebApplicationInitializer", servlet);
