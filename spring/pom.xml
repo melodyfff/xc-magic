@@ -15,6 +15,7 @@
         <module>beans</module>
         <module>aop</module>
         <module>web</module>
+        <module>integration</module>
     </modules>
 
 
