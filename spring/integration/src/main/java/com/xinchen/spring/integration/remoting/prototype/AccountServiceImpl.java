@@ -16,13 +16,13 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void insertAccount(Account account) {
         // do something
-        log.info(this+" -> insertAccount() be called.");
+        log.warn(this+" -> insertAccount() be called.");
     }
 
     @Override
     public List<Account> getAccounts(String name) {
         // do something
-        log.info(this+" -> getAccounts() be called.");
+        log.warn(this+" -> getAccounts() be called.");
         return Collections.singletonList(new Account(name));
     }
 }

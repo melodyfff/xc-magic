@@ -1,6 +1,8 @@
 package com.xinchen.spring.integration.remoting.rmi.route;
 
 import com.xinchen.spring.integration.remoting.rmi.client.RmiCallObject;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,7 @@ import javax.annotation.Resource;
  * @version 1.0
  * @date 18/09/2019 16:45
  */
+@Api("RMI")
 @RestController
 public class RmiRoutController {
 
@@ -22,10 +25,11 @@ public class RmiRoutController {
     @Lazy
     private RmiCallObject rmiCallObject;
 
+
+    @ApiOperation(value = "触发RMI调用")
     @GetMapping("/rmi")
     public String call(){
-        rmiCallObject.call();
-        return "ok.";
+        return rmiCallObject.call();
     }
 
 }

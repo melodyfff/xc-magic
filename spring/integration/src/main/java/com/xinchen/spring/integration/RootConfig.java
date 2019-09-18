@@ -23,7 +23,7 @@ public class RootConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         // 设置欢迎页面
-        registry.addRedirectViewController("/", "/static/index.html");
+        registry.addRedirectViewController("/", "/swagger-ui.html");
     }
 
     @Override
@@ -31,6 +31,12 @@ public class RootConfig extends WebMvcConfigurerAdapter {
         // 设置支持静态资源访问
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static");
+
+        // swagger-ui.html相关的所有前端静态文件都在springfox-swagger-ui.jar里面
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
 }
