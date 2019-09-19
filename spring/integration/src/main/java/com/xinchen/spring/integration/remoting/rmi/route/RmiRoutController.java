@@ -17,7 +17,12 @@ import javax.annotation.Resource;
  * @version 1.0
  * @date 18/09/2019 16:45
  */
-@Api("RMI")
+@Api(
+        value = "RMI",
+        tags = "RMI调用",
+        produces = "application/json",
+        protocols = "http"
+)
 @RestController
 public class RmiRoutController {
 
