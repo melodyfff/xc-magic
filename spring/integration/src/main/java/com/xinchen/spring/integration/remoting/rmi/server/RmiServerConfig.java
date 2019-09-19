@@ -25,7 +25,7 @@ public class RmiServerConfig {
 
 
     @Bean
-    public RmiServiceExporter rmiServiceExporter(){
+    public RmiServiceExporter rmiAccountServiceExporter(){
         final RmiServiceExporter rmiServiceExporter = new RmiServiceExporter();
         // 设置服务名
         rmiServiceExporter.setServiceName("AccountService");

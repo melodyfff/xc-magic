@@ -26,6 +26,7 @@ public class RmiClientConfig {
     @Lazy
     public RmiProxyFactoryBean rmiAccountService(){
         final RmiProxyFactoryBean rmiService = new RmiProxyFactoryBean();
+        // 注： 这里是基于RMI的
         rmiService.setServiceUrl("rmi://localhost:1199/AccountService");
         rmiService.setServiceInterface(AccountService.class);
         return rmiService;

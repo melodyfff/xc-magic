@@ -20,6 +20,10 @@
   <properties>
     <servlet.version>3.1.0</servlet.version>
     <jcl-over-slf4j.version>1.7.24</jcl-over-slf4j.version>
+    <swagger2.version>2.9.2</swagger2.version>
+    <jackson.version>2.9.9</jackson.version>
+    <hessian.version>4.0.62</hessian.version>
+    <httpclient.version>4.5.10</httpclient.version>
   </properties>
 
   <dependencies>
@@ -45,23 +49,31 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.9.9</version>
+      <version>${jackson.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger2</artifactId>
-      <version>2.9.2</version>
+      <version>${swagger2.version}</version>
     </dependency>
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger-ui</artifactId>
-      <version>2.9.2</version>
+      <version>${swagger2.version}</version>
     </dependency>
+
+    <!--  Hessian是一个轻量级的RPC框架,基于HTTP协议传输,使用Hessian二进制序列化，它的参数和返回值都需要实现Serializable接口  -->
     <dependency>
       <groupId>com.caucho</groupId>
       <artifactId>hessian</artifactId>
-      <version>4.0.62</version>
+      <version>${hessian.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${httpclient.version}</version>
     </dependency>
   </dependencies>
 
