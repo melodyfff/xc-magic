@@ -16,6 +16,7 @@
         <module>aop</module>
         <module>web</module>
         <module>integration</module>
+        <module>data</module>
     </modules>
 
 
