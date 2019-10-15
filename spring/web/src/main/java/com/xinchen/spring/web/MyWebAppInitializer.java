@@ -2,14 +2,21 @@ package com.xinchen.spring.web;
 
 import com.xinchen.spring.web.config.AppConfig;
 import com.xinchen.spring.web.config.RootConfig;
+import org.springframework.web.SpringServletContainerInitializer;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
+import java.util.Set;
 
 /**
+ *
+ * 对于多个实现了{@link WebApplicationInitializer} 接口的环境初始化,
+ *
+ * {@link SpringServletContainerInitializer#onStartup(Set, ServletContext)}中会遍历加载配置环境
  *
  * 配置DispatcherServlet,通过继承{@link AbstractAnnotationConfigDispatcherServletInitializer}
  *

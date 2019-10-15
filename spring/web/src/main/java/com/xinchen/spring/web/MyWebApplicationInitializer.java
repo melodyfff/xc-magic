@@ -2,6 +2,7 @@ package com.xinchen.spring.web;
 
 import com.xinchen.spring.web.config.RootConfig;
 import org.springframework.core.Ordered;
+import org.springframework.web.SpringServletContainerInitializer;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -11,9 +12,12 @@ import org.springframework.web.servlet.handler.HandlerExceptionResolverComposite
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+import java.util.Set;
 
 /**
+ * 对于多个实现了{@link WebApplicationInitializer} 接口的环境初始化,
  *
+ * {@link SpringServletContainerInitializer#onStartup(Set, ServletContext)}中会遍历加载配置环境
  *
  * 配置DispatcherServlet,通过实现{@link WebApplicationInitializer#onStartup(ServletContext)}
  *
