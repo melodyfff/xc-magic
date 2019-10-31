@@ -6,14 +6,13 @@ import com.xinchen.event.custom.utils.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
 
 /**
  * @author xinchen
  * @version 1.0
  * @date 23/10/2019 15:15
  */
-public class AbstractMessage implements Message{
+public abstract class AbstractMessage implements Message{
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -25,24 +24,6 @@ public class AbstractMessage implements Message{
     public String getId() {
         // 返回消息的id
         return this.id;
-    }
-
-    @Override
-    public boolean send(String message) {
-        return false;
-    }
-
-    @Override
-    public boolean receive(String message) {
-        return false;
-    }
-
-
-    private static String makeId(Object obj){
-        // 模仿spring生成Unique id 为这条消息
-        return obj == null ?
-                "" :
-                obj.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(obj));
     }
 
     @Override
@@ -61,5 +42,12 @@ public class AbstractMessage implements Message{
             // spring中还有一个PayloadApplicationEvent进行事件封装,暂时不处理
             logger.warn("not support yet.");
         }
+    }
+
+    private static String makeId(Object obj){
+        // 模仿spring生成Unique id 为这条消息
+        return obj == null ?
+                "" :
+                obj.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(obj));
     }
 }

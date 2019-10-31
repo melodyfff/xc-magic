@@ -2,6 +2,7 @@ package com.xinchen.event.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author xinchen
@@ -10,5 +11,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = "com.xinchen.event")
+@Import(AsyncConfig.class)
 public class RootConfig {
 }
