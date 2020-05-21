@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * 以下注释掉的写法都通用
  *
+ * 访问地址： curl http://localhost:8080/app1/ok
+ * 注意： app1和app都可以，此项目中配置了2个servlet
+ *
  * @author Xin Chen (xinchenmelody@gmail.com)
  * @version 1.0
  * @date Created In 2019/9/14 0:34
