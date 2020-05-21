@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.xinchen.dubbo</groupId>
+        <artifactId>dubbo</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>dubbo-demo</artifactId>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>The demo module of dubbo project</description>
+
+    <properties>
+        <!-- Maven plugins -->
+        <maven_jar_version>3.2.0</maven_jar_version>
+    </properties>
+
+    <modules>
+        <module>dubbo-demo-interface</module>
+        <module>dubbo-demo-xml</module>
+        <module>dubbo-demo-annotation</module>
+        <module>dubbo-demo-api</module>        
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-bom</artifactId>
+                <version>${dubbo.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
