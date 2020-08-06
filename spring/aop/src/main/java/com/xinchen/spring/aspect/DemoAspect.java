@@ -27,6 +27,12 @@ import java.util.Arrays;
  *
  * 参考: https://docs.spring.io/spring/docs/5.2.0.BUILD-SNAPSHOT/spring-framework-reference/core.html#aop-ataspectj-advice-ordering
  *
+ *
+ *
+ * Aspect Running Sequence:
+ * Success      : @Around -> @Before -> 执行方法 ->  @Around -> @After -> @AfterReturning
+ * fail(error)  : @Around -> @Before -> 方法报错 ->  @After  -> @AfterThrowing
+ *
  * @author xinchen
  * @version 1.0
  * @date 20/08/2019 15:31

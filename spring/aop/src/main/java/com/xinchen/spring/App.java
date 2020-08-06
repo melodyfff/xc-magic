@@ -9,6 +9,12 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
+ *
+ *
+ * Aspect Running Sequence:
+ * Success      : @Around -> @Before -> 执行方法 ->  @Around -> @After -> @AfterReturning
+ * fail(error)  : @Around -> @Before -> 方法报错 ->  @After  -> @AfterThrowing
+ *
  * Hello world!
  */
 public class App {
