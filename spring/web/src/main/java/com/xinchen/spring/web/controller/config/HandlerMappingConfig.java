@@ -28,5 +28,12 @@ public class HandlerMappingConfig {
                 .paths("/test").methods(RequestMethod.POST).build();
         Method method = UserHandler.class.getMethod("ok", String.class);
         mapping.registerMapping(info, userHandler, method);
+
+
+
+        final RequestMappingInfo info2 = RequestMappingInfo
+                .paths("/test2").methods(RequestMethod.POST).build();
+        Method method2 = UserHandler.class.getMethod("ok", String.class);
+        mapping.registerMapping(info2, "userHandler", method2);
     }
 }
