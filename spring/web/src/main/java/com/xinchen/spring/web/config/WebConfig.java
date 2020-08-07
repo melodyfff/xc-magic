@@ -1,15 +1,21 @@
 package com.xinchen.spring.web.config;
 
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import com.xinchen.spring.web.controller.config.RequestModelArgumentResolver;
 import com.xinchen.spring.web.exception.MyDefaultHandlerExceptionResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
+import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.validation.Validator;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -27,7 +33,9 @@ import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.servlet.view.xml.MappingJackson2XmlView;
 
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -245,5 +253,25 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         super.extendHandlerExceptionResolvers(exceptionResolvers);
     }
 
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        // 添加对参数处理的解析器
+        // 关于参数的解析入口： org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues()
+        // 针对这个可自定义参数注解，对请求或者返回数据进行赋值绑定处理
+        // see org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor
 
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>(4);
+        messageConverters.add(new ByteArrayHttpMessageConverter());
+        messageConverters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        try {
+            messageConverters.add(new SourceHttpMessageConverter<>());
+        }
+        catch (Error ignore) {
+            // Ignore when no TransformerFactory implementation is available
+        }
+        messageConverters.add(new AllEncompassingFormHttpMessageConverter());
+
+        // 添加自定义参数解析
+        argumentResolvers.add(new RequestModelArgumentResolver(messageConverters));
+    }
 }
