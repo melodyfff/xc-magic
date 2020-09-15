@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  *
  * Hello world!
  */
-public class App {
+class App {
     static CountDownLatch latch = new CountDownLatch(1);
     public static void main(String[] args) throws InterruptedException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);

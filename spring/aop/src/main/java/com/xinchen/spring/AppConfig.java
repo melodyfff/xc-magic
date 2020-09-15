@@ -12,8 +12,7 @@ import org.springframework.context.annotation.FilterType;
  * @version 1.0
  * @date 19/08/2019 16:18
  */
-@Configuration
 @EnableAspectJAutoProxy(proxyTargetClass=true)
-@ComponentScan(basePackages = "com.xinchen.spring",excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,classes = {LoadTimeWeaverConfig.class})})
-public class AppConfig {
+@ComponentScan(basePackageClasses =AppConfig.class ,excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,classes = {LoadTimeWeaverConfig.class})})
+class AppConfig {
 }
