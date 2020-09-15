@@ -11,14 +11,10 @@ import javax.annotation.PreDestroy;
  * @version 1.0
  * @date Created In 2019/6/24 23:30
  */
-public class Rick implements InitializingBean, DisposableBean {
+class Rick implements InitializingBean, DisposableBean {
 
-    public Rick(){
+    Rick(){
         System.out.println("Rick is in [Rick] - Rick()");
-    }
-
-    public void customInit(){
-        System.out.println("Rick is in [Rick] - customInit()");
     }
 
     @PostConstruct
@@ -31,6 +27,10 @@ public class Rick implements InitializingBean, DisposableBean {
         System.out.println("Rick is in [InitializingBean] - afterPropertiesSet()");
     }
 
+    void customInit(){
+        System.out.println("Rick is in [Rick] - customInit()");
+    }
+
     @PreDestroy
     public void preDestroy(){
         System.out.println("Rick is in [@PreDestroy] - preDestroy()");
@@ -41,7 +41,7 @@ public class Rick implements InitializingBean, DisposableBean {
         System.out.println("Rick is in [DisposableBean] - destroy()");
     }
 
-    public void customDestroy(){
+    void customDestroy(){
         System.out.println("Rick is in [Rick] - customDestroy()");
     }
 }
