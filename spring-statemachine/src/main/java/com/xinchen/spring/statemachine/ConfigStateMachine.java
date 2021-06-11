@@ -2,7 +2,6 @@ package com.xinchen.spring.statemachine;
 
 import java.util.EnumSet;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
@@ -15,7 +14,6 @@ import org.springframework.statemachine.state.State;
 /**
  *
  */
-@Configuration
 @EnableStateMachine
 class ConfigStateMachine extends EnumStateMachineConfigurerAdapter<States,Events> {
 
