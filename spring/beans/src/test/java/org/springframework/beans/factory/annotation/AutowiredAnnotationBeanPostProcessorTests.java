@@ -47,57 +47,119 @@ import org.springframework.core.annotation.Order;
  * @date 2021-08-02 13:50
  */
 class AutowiredAnnotationBeanPostProcessorTests {
-  private DefaultListableBeanFactory bf;
+  private DefaultListableBeanFactory defaultListableBeanFactory;
 
-  private AutowiredAnnotationBeanPostProcessor bpp;
+  private AutowiredAnnotationBeanPostProcessor beanPostProcessor;
 
   @BeforeEach
   public void setup() {
-    bf = new DefaultListableBeanFactory();
-    bf.registerResolvableDependency(BeanFactory.class, bf);
+    defaultListableBeanFactory = new DefaultListableBeanFactory();
+    defaultListableBeanFactory.registerResolvableDependency(BeanFactory.class,
+        defaultListableBeanFactory);
 
-    bpp = new AutowiredAnnotationBeanPostProcessor();
-    bpp.setBeanFactory(bf);
+    beanPostProcessor = new AutowiredAnnotationBeanPostProcessor();
+    beanPostProcessor.setBeanFactory(defaultListableBeanFactory);
 
-    bf.addBeanPostProcessor(bpp);
-    bf.setAutowireCandidateResolver(new QualifierAnnotationAutowireCandidateResolver());
-    bf.setDependencyComparator(AnnotationAwareOrderComparator.INSTANCE);
+    defaultListableBeanFactory.addBeanPostProcessor(beanPostProcessor);
+    defaultListableBeanFactory.setAutowireCandidateResolver(new QualifierAnnotationAutowireCandidateResolver());
+    defaultListableBeanFactory.setDependencyComparator(AnnotationAwareOrderComparator.INSTANCE);
   }
 
   @AfterEach
   public void close() {
-    bf.destroySingletons();
+    defaultListableBeanFactory.destroySingletons();
   }
 
   @Test
   public void testIncompleteBeanDefinition() {
     // 不完整的bean
-    bf.registerBeanDefinition("testBean", new GenericBeanDefinition());
+    defaultListableBeanFactory.registerBeanDefinition("testBean", new GenericBeanDefinition());
 
     assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
-            bf.getBean("testBean"))
+            defaultListableBeanFactory.getBean("testBean"))
         .withRootCauseInstanceOf(IllegalStateException.class);
   }
 
   @Test
   public void testResourceInjection() {
-    RootBeanDefinition bd = new RootBeanDefinition(ResourceInjectionBean.class);
-    bd.setScope(BeanDefinition.SCOPE_PROTOTYPE);
-    bf.registerBeanDefinition("annotatedBean", bd);
-    TestBean tb = new TestBean();
-    bf.registerSingleton("testBean", tb);
+    RootBeanDefinition beanDefinition = new RootBeanDefinition(ResourceInjectionBean.class);
+    // 这里设置为prototype，每次新建
+    beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
 
-    ResourceInjectionBean bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
+    defaultListableBeanFactory.registerBeanDefinition("annotatedBean", beanDefinition);
+
+    TestBean tb = new TestBean();
+    defaultListableBeanFactory.registerSingleton("testBean", tb);
+
+    // 以下获取的TestBean均为同一个
+    ResourceInjectionBean bean = (ResourceInjectionBean) defaultListableBeanFactory.getBean("annotatedBean");
     assertThat(bean.getTestBean()).isSameAs(tb);
     assertThat(bean.getTestBean2()).isSameAs(tb);
 
-    bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
+    bean = (ResourceInjectionBean) defaultListableBeanFactory.getBean("annotatedBean");
     assertThat(bean.getTestBean()).isSameAs(tb);
     assertThat(bean.getTestBean2()).isSameAs(tb);
   }
 
+  @Test
+  public void testExtendedResourceInjection() {
+    RootBeanDefinition bd = new RootBeanDefinition(TypedExtendedResourceInjectionBean.class);
+    bd.setScope(BeanDefinition.SCOPE_PROTOTYPE);
+    defaultListableBeanFactory.registerBeanDefinition("annotatedBean", bd);
+
+    TestBean tb = new TestBean();
+    defaultListableBeanFactory.registerSingleton("testBean", tb);
+
+    NestedTestBean ntb = new NestedTestBean();
+    defaultListableBeanFactory.registerSingleton("nestedTestBean", ntb);
+
+    TypedExtendedResourceInjectionBean bean = (TypedExtendedResourceInjectionBean) defaultListableBeanFactory.getBean("annotatedBean");
+    assertThat(bean.getTestBean()).isSameAs(tb);
+    assertThat(bean.getTestBean2()).isSameAs(tb);
+    assertThat(bean.getTestBean3()).isSameAs(tb);
+    assertThat(bean.getTestBean4()).isSameAs(tb);
+    assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+    assertThat(bean.getBeanFactory()).isSameAs(defaultListableBeanFactory);
+
+    bean = (TypedExtendedResourceInjectionBean) defaultListableBeanFactory.getBean("annotatedBean");
+    assertThat(bean.getTestBean()).isSameAs(tb);
+    assertThat(bean.getTestBean2()).isSameAs(tb);
+    assertThat(bean.getTestBean3()).isSameAs(tb);
+    assertThat(bean.getTestBean4()).isSameAs(tb);
+    assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+    assertThat(bean.getBeanFactory()).isSameAs(defaultListableBeanFactory);
+
+    String[] depBeans = defaultListableBeanFactory.getDependenciesForBean("annotatedBean");
+    assertThat(depBeans.length).isEqualTo(2);
+    assertThat(depBeans[0]).isEqualTo("testBean");
+    assertThat(depBeans[1]).isEqualTo("nestedTestBean");
+  }
 
 
+  @Test
+  public void testExtendedResourceInjectionWithDestruction() {
+    defaultListableBeanFactory.registerBeanDefinition("annotatedBean", new RootBeanDefinition(TypedExtendedResourceInjectionBean.class));
+    defaultListableBeanFactory.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
+
+    NestedTestBean ntb = new NestedTestBean();
+    defaultListableBeanFactory.registerSingleton("nestedTestBean", ntb);
+
+    TestBean tb = defaultListableBeanFactory.getBean("testBean", TestBean.class);
+    TypedExtendedResourceInjectionBean bean = (TypedExtendedResourceInjectionBean) defaultListableBeanFactory.getBean("annotatedBean");
+    assertThat(bean.getTestBean()).isSameAs(tb);
+    assertThat(bean.getTestBean2()).isSameAs(tb);
+    assertThat(bean.getTestBean3()).isSameAs(tb);
+    assertThat(bean.getTestBean4()).isSameAs(tb);
+    assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+    assertThat(bean.getBeanFactory()).isSameAs(defaultListableBeanFactory);
+
+    assertThat(defaultListableBeanFactory.getDependenciesForBean("annotatedBean")).isEqualTo(new String[] {"testBean", "nestedTestBean"});
+    defaultListableBeanFactory.destroySingleton("testBean");
+    assertThat(defaultListableBeanFactory.containsSingleton("testBean")).isFalse();
+    assertThat(defaultListableBeanFactory.containsSingleton("annotatedBean")).isFalse();
+    assertThat(bean.destroyed).isTrue();
+    assertThat(defaultListableBeanFactory.getDependenciesForBean("annotatedBean").length).isSameAs(0);
+  }
 
 
 
