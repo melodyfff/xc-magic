@@ -17,7 +17,7 @@
     <spring.version>5.2.0.RELEASE</spring.version>
     <logback.version>1.2.3</logback.version>
     <lombok.version>1.18.2</lombok.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <jsr305.version>3.0.2</jsr305.version>
   </properties>
 
